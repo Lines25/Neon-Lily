@@ -5,65 +5,385 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Глава 7 - Неонова Лілія</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
+    :root {
+        /* Material Light Theme */
+        --primary: #6200ee;
+        --primary-dark: #3700b3;
+        --primary-light: #bb86fc;
+        --secondary: #03dac6;
+        --background: #ffffff;
+        --surface: #ffffff;
+        --error: #b00020;
+        --text-primary: rgba(0, 0, 0, 0.87);
+        --text-secondary: rgba(0, 0, 0, 0.60);
+        --text-disabled: rgba(0, 0, 0, 0.38);
+        --border: rgba(0, 0, 0, 0.12);
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --elevation-1: 0 2px 1px -1px rgba(0,0,0,0.2), 
+                      0 1px 1px 0 rgba(0,0,0,0.14), 
+                      0 1px 3px 0 rgba(0,0,0,0.12);
+        --elevation-2: 0 3px 3px -2px rgba(0,0,0,0.2), 
+                      0 3px 4px 0 rgba(0,0,0,0.14), 
+                      0 1px 8px 0 rgba(0,0,0,0.12);
+        --elevation-3: 0 6px 10px -4px rgba(0,0,0,0.2),
+                      0 9px 12px 1px rgba(0,0,0,0.14),
+                      0 3px 16px 2px rgba(0,0,0,0.12);
+        --font-size: 1rem;
+        --read-progress: 0;
+        --line-height: 1.6;
+    }
+
+    [data-theme="dark"] {
+        --primary: #bb86fc;
+        --primary-dark: #3700b3;
+        --primary-light: #6200ee;
+        --secondary: #03dac6;
+        --background: #121212;
+        --surface: #1e1e1e;
+        --error: #cf6679;
+        --text-primary: rgba(255, 255, 255, 0.87);
+        --text-secondary: rgba(255, 255, 255, 0.60);
+        --text-disabled: rgba(255, 255, 255, 0.38);
+        --border: rgba(255, 255, 255, 0.12);
+        --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes ripple {
+        to {
+            transform: scale(4);
+            opacity: 0;
         }
-        header {
-            text-align: center;
-            padding: 20px;
-        }
-        h1, h2 {
-            color: #ff66ff;
-        }
-        .chapter-content {
-            margin: 20px;
-        }
-        .chapter-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .chapter-navigation button {
-            background-color: #ff66ff;
-            color: white;
-            border: none;
+    }
+
+    body {
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: var(--background);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        animation: fadeIn 0.5s ease-in;
+        transition: all 0.3s ease;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    nav {
+        background: var(--surface);
+        padding: 1rem;
+        box-shadow: var(--elevation-2);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .nav-group {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background: var(--surface);
+        min-width: 200px;
+        box-shadow: var(--elevation-2);
+        border-radius: 4px;
+        padding: 0.5rem;
+        top: 100%;
+        animation: slideIn 0.3s ease-out;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border);
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-item {
+        padding: 0.8rem;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        color: var(--text-primary);
+        cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+        background: rgba(98, 0, 238, 0.08);
+    }
+
+    .chapter-content {
+        background: var(--surface);
+        border-radius: 8px;
+        padding: 2rem;
+        margin: 2rem auto;
+        box-shadow: var(--elevation-1);
+        animation: slideIn 0.6s ease-out;
+        line-height: var(--line-height);
+        transition: all 0.3s ease;
+        border: 1px solid var(--border);
+    }
+
+    .chapter-separator {
+        border: 0;
+        height: 1px;
+        background: var(--border);
+        margin: 2rem 0;
+        transition: background 0.3s ease;
+    }
+
+    .chapter-title {
+        text-align: center;
+        margin: 2rem 0;
+        color: var(--primary);
+        font-size: 2.5rem;
+        font-weight: 300;
+        transition: all 0.3s ease;
+    }
+
+    .chapter-navigation {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .nav-button {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 0 16px;
+        height: 36px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: 0.0892857143em;
+        text-transform: uppercase;
+        box-shadow: var(--elevation-1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-button:hover {
+        background-color: var(--primary-dark);
+        box-shadow: var(--elevation-2);
+    }
+
+    .nav-button:active {
+        box-shadow: var(--elevation-1);
+    }
+
+    .nav-button:disabled {
+        background-color: var(--text-disabled);
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .meta-info {
+        color: var(--text-secondary);
+        text-align: center;
+        margin-bottom: 2rem;
+        transition: color 0.3s ease;
+    }
+
+    .meta-info p {
+        margin: 0.5rem 0;
+    }
+
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple 600ms linear;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .reading-controls {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        display: flex;
+        gap: 1rem;
+        background: var(--surface);
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: var(--elevation-3);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border);
+    }
+
+    .text-size-controls {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: var(--primary);
+        width: calc(var(--read-progress) * 100%);
+        transition: width 0.3s ease;
+        z-index: 1001;
+    }
+
+    @media (max-width: 768px) {
+        .container {
             padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
         }
-        .chapter-navigation button:hover {
-            background-color: #ff33ff;
+        
+        .nav-group {
+            gap: 1rem;
         }
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #888;
+        
+        .chapter-title {
+            font-size: 1.8rem;
         }
-    </style>
+        
+        .nav-button {
+            padding: 0 12px;
+            height: 32px;
+            font-size: 0.8125rem;
+        }
+
+        .reading-controls {
+            bottom: 1rem;
+            right: 1rem;
+            padding: 0.5rem;
+        }
+    }
+
+/* Existing styles remain the same */
+    .warning-card {
+        background: var(--error);
+        color: white;
+        border-radius: 8px;
+        padding: 1rem 1.5rem;
+        margin: 1rem 0;
+        box-shadow: var(--elevation-2);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        animation: slideIn 0.3s ease-out;
+    }
+
+    .warning-icon {
+        font-size: 1.5rem;
+    }
+
+    .warning-content {
+        flex: 1;
+    }
+
+    .warning-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .warning-text {
+        margin: 0;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+        .warning-card {
+            padding: 0.75rem 1rem;
+        }
+    }
+
+
+</style>
 </head>
 <body>
+    <div class="progress-bar"></div>
+    
+    <nav>
+        <div class="nav-container">
+            <div class="nav-group">
+                <div class="dropdown">
+                    <button class="nav-button">Том 1 ▼</button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" onclick="location.href='chapter1_2.html'">Глава 1+2</div>
+                        <div class="dropdown-item" onclick="location.href='chapter3.html'">Глава 3</div>
+                        <div class="dropdown-item" onclick="location.href='chapter4.html'">Глава 4</div>
+                        <div class="dropdown-item" onclick="location.href='chapter5.html'">Глава 5</div>
+                        <div class="dropdown-item" onclick="location.href='chapter6.html'">Глава 6</div>
+                        <div class="dropdown-item" onclick="location.href='chapter7.html'">Глава 7</div>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="nav-button" disabled>Том 2 ▼</button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" style="color: #888">Глава 1 (незабаром)</div>
+                    </div>
+                </div>
+            </div>
+            <button class="nav-button" onclick="location.href='index.html'">Головна</button>
+        </div>
+    </nav>
 
-    <header>
-        <h1>Неонова Лілія - Глава 7</h1>
-    </header>
+    <main class="container">
+        <h1 class="chapter-title">Неонова Лілія - Глави 7</h1>
+        
+        <div class="meta-info">
+            <p>Фанфік "Неононова Лілія: Том 1.7"</p>
+            <p>Написано: Бім-Азбей</p>
+            <p>Ідея: Бім-Азбей</p>
+            <p>Все на цьому папірецю: Бім-Азбей</p>
+            <p>Папірець: NanoTraisen</p>
+        </div>
 
-    <main>
+		<div class="warning-card">
+		    <div class="warning-icon">⚠️</div>
+		    <div class="warning-content">
+		        <div class="warning-title">Попередження про вміст 18+</div>
+		        <p class="warning-text">Цей матеріал містить сцени сексуального характеру та призначений для дорослої аудиторії (18+).</p>
+		    </div>
+		</div>
+
         <section class="chapter-content">
-            <p style="white-space: pre-line">Фанфік "Неонова Лілія: Том 1.4"
-            Написано: Бім-Азбей
-            Ідея: Бім-Азбей
-            Все на цьому листку: Бім-Азбей
-            Папірчик: NanoTraisen
-            P. S. Прочитайте попередні глави перед прочитанням!
-            ===================================================
-            #                                               Глава 7
-            ##                                           Пригоди СБ
-            ===================================================
-            Одного разу, гуляв Неон- Рам та шукав Мілію- Ріт. Ходив, шукав, і тут бачить Унахтшу в формі СБ, пройшовши неї, він побачив, що це Мілія. Привітавшись, вона його теж впізнала. Неон був трішки в шоці, що його люба стала Кадетом. І в них був такий діалог:
+            <hr class="chapter-separator">
+            <h2>Глава 7 - Пригоди СБ</h2>
+            <hr class="chapter-separator">
+            <p style="white-space: pre-line">
+			Одного разу, гуляв Неон- Рам та шукав Мілію- Ріт. Ходив, шукав, і тут бачить Унахтшу в формі СБ, пройшовши неї, він побачив, що це Мілія. Привітавшись, вона його теж впізнала. Неон був трішки в шоці, що його люба стала Кадетом. І в них був такий діалог:
             - Неоне, ти мені показав роботу СБ і яка вона інтересна, тому я вирішила спробувати це, робота в СБ й так дуже хороший досвід - Сказала Ріт, прокрутившись, щоб Рам міг подивитись на її костюм Кадета.
             - Я дуже радий, що тобі сподобалось це все, тепер ми зможем проводити більше часу, сказавши, що ми комманда, давай я тебе навчу роботі СБ для цього ? - Сказав Неон- Рам, зрадівши тим, що його люба перейшла до СБ.
             - Звісно, любий! - Сказала Мілія- Ріт, пішовши за Неоном до СБ. Прийшовши до тиру в СБ, він почав показувати, як потрібно стріляти з дізейблеру. Рам стріляв дуже прицільно, швидко та практично не промахувався в голову. Мілія стріляла дуже акуратно, повільно та часто промахувалася. Так вони трішки постріляли, трішки побили станбатонами манекенів та пішли на патруль. Трохи походив, їм, як СБ Шахтарі запропонували піти з ними на експедицію. Неон подумав: "Можна буде файно навчити Мілію стріляти з зброї, а не тазера", в той час, Ріт подумала: "Якщо любий піде, то й я піду!". І відбувся дуже коротки діалог: 
@@ -83,14 +403,95 @@
         </section>
 
         <div class="chapter-navigation">
-            <button onclick="location.href='index.html'">Повернутись до головної</button>
-            <button onclick="location.href='index.html'">Наступна Глава (Незабаром)</button>
+            <button class="nav-button" onclick="location.href='chapter1_2.html'">← Глави 1+2</button>
+            <button class="nav-button" onclick="location.href='chapter4.html'">Глава 4 →</button>
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Lines</p>
-    </footer>
+    <div class="reading-controls">
+        <div class="text-size-controls">
+            <button class="nav-button" onclick="changeFontSize(-1)">A-</button>
+            <button class="nav-button" onclick="changeFontSize(0)">A</button>
+            <button class="nav-button" onclick="changeFontSize(1)">A+</button>
+        </div>
+        <button class="nav-button" onclick="toggleNightMode()">🌓</button>
+    </div>
 
+    <script>
+        // Ripple effect
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+                ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+                button.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Reading settings
+        let currentFontSize = 1;
+
+        function changeFontSize(delta) {
+            if(delta === 0) {
+                currentFontSize = 1;
+            } else {
+                currentFontSize += delta * 0.1;
+                currentFontSize = Math.min(Math.max(0.8, currentFontSize), 1.5);
+            }
+            document.documentElement.style.fontSize = `${currentFontSize}rem`;
+            localStorage.setItem('fontSize', currentFontSize);
+        }
+
+        function toggleNightMode() {
+            document.documentElement.setAttribute(
+                'data-theme',
+                document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+            );
+            localStorage.setItem('theme', document.documentElement.getAttribute('data-theme'));
+        }
+        // Progress tracking
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = scrollTop / scrollHeight;
+            document.documentElement.style.setProperty('--read-progress', progress);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowLeft') window.location.href = 'index.html';
+            if(e.key === 'ArrowRight') window.location.href = 'chapter3.html';
+        });
+
+        // Load saved settings
+        window.addEventListener('load', () => {
+            const savedFontSize = localStorage.getItem('fontSize');
+            if(savedFontSize) {
+                currentFontSize = parseFloat(savedFontSize);
+                document.documentElement.style.fontSize = `${currentFontSize}rem`;
+            }
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+
+            const savedScroll = localStorage.getItem('chapterScroll');
+            if(savedScroll && window.location.hash === '#continue') {
+                window.scrollTo(0, savedScroll);
+            }
+        });
+
+        // Save position before unload
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('chapterScroll', window.pageYOffset);
+        });
+    </script>
 </body>
 </html>

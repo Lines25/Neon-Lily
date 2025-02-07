@@ -5,85 +5,432 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Глава 1 - Неонова Лілія</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
+    :root {
+        /* Material Light Theme */
+        --primary: #6200ee;
+        --primary-dark: #3700b3;
+        --primary-light: #bb86fc;
+        --secondary: #03dac6;
+        --background: #ffffff;
+        --surface: #ffffff;
+        --error: #b00020;
+        --text-primary: rgba(0, 0, 0, 0.87);
+        --text-secondary: rgba(0, 0, 0, 0.60);
+        --text-disabled: rgba(0, 0, 0, 0.38);
+        --border: rgba(0, 0, 0, 0.12);
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --elevation-1: 0 2px 1px -1px rgba(0,0,0,0.2), 
+                      0 1px 1px 0 rgba(0,0,0,0.14), 
+                      0 1px 3px 0 rgba(0,0,0,0.12);
+        --elevation-2: 0 3px 3px -2px rgba(0,0,0,0.2), 
+                      0 3px 4px 0 rgba(0,0,0,0.14), 
+                      0 1px 8px 0 rgba(0,0,0,0.12);
+        --elevation-3: 0 6px 10px -4px rgba(0,0,0,0.2),
+                      0 9px 12px 1px rgba(0,0,0,0.14),
+                      0 3px 16px 2px rgba(0,0,0,0.12);
+        --font-size: 1rem;
+        --read-progress: 0;
+        --line-height: 1.6;
+    }
+
+    [data-theme="dark"] {
+        --primary: #bb86fc;
+        --primary-dark: #3700b3;
+        --primary-light: #6200ee;
+        --secondary: #03dac6;
+        --background: #121212;
+        --surface: #1e1e1e;
+        --error: #cf6679;
+        --text-primary: rgba(255, 255, 255, 0.87);
+        --text-secondary: rgba(255, 255, 255, 0.60);
+        --text-disabled: rgba(255, 255, 255, 0.38);
+        --border: rgba(255, 255, 255, 0.12);
+        --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes ripple {
+        to {
+            transform: scale(4);
+            opacity: 0;
         }
-        header {
-            text-align: center;
-            padding: 20px;
-        }
-        h1, h2 {
-            color: #ff66ff;
-        }
-        .chapter-content {
-            margin: 20px;
-        }
-        .chapter-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .chapter-navigation button {
-            background-color: #ff66ff;
-            color: white;
-            border: none;
+    }
+
+    body {
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: var(--background);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        animation: fadeIn 0.5s ease-in;
+        transition: all 0.3s ease;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    nav {
+        background: var(--surface);
+        padding: 1rem;
+        box-shadow: var(--elevation-2);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .nav-group {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background: var(--surface);
+        min-width: 200px;
+        box-shadow: var(--elevation-2);
+        border-radius: 4px;
+        padding: 0.5rem;
+        top: 100%;
+        animation: slideIn 0.3s ease-out;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border);
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-item {
+        padding: 0.8rem;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        color: var(--text-primary);
+        cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+        background: rgba(98, 0, 238, 0.08);
+    }
+
+    .chapter-content {
+        background: var(--surface);
+        border-radius: 8px;
+        padding: 2rem;
+        margin: 2rem auto;
+        box-shadow: var(--elevation-1);
+        animation: slideIn 0.6s ease-out;
+        line-height: var(--line-height);
+        transition: all 0.3s ease;
+        border: 1px solid var(--border);
+    }
+
+    .chapter-separator {
+        border: 0;
+        height: 1px;
+        background: var(--border);
+        margin: 2rem 0;
+        transition: background 0.3s ease;
+    }
+
+    .chapter-title {
+        text-align: center;
+        margin: 2rem 0;
+        color: var(--primary);
+        font-size: 2.5rem;
+        font-weight: 300;
+        transition: all 0.3s ease;
+    }
+
+    .chapter-navigation {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .nav-button {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 0 16px;
+        height: 36px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: 0.0892857143em;
+        text-transform: uppercase;
+        box-shadow: var(--elevation-1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-button:hover {
+        background-color: var(--primary-dark);
+        box-shadow: var(--elevation-2);
+    }
+
+    .nav-button:active {
+        box-shadow: var(--elevation-1);
+    }
+
+    .nav-button:disabled {
+        background-color: var(--text-disabled);
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .meta-info {
+        color: var(--text-secondary);
+        text-align: center;
+        margin-bottom: 2rem;
+        transition: color 0.3s ease;
+    }
+
+    .meta-info p {
+        margin: 0.5rem 0;
+    }
+
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple 600ms linear;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .reading-controls {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        display: flex;
+        gap: 1rem;
+        background: var(--surface);
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: var(--elevation-3);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border);
+    }
+
+    .text-size-controls {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: var(--primary);
+        width: calc(var(--read-progress) * 100%);
+        transition: width 0.3s ease;
+        z-index: 1001;
+    }
+
+    @media (max-width: 768px) {
+        .container {
             padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
         }
-        .chapter-navigation button:hover {
-            background-color: #ff33ff;
+        
+        .nav-group {
+            gap: 1rem;
         }
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #888;
+        
+        .chapter-title {
+            font-size: 1.8rem;
         }
-    </style>
+        
+        .nav-button {
+            padding: 0 12px;
+            height: 32px;
+            font-size: 0.8125rem;
+        }
+
+        .reading-controls {
+            bottom: 1rem;
+            right: 1rem;
+            padding: 0.5rem;
+        }
+    }
+</style>
 </head>
 <body>
+    <div class="progress-bar"></div>
+    
+    <nav>
+        <div class="nav-container">
+            <div class="nav-group">
+                <div class="dropdown">
+                    <button class="nav-button">Том 1 ▼</button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" onclick="location.href='chapter1_2.html'">Глава 1+2</div>
+                        <div class="dropdown-item" onclick="location.href='chapter3.html'">Глава 3</div>
+                        <div class="dropdown-item" onclick="location.href='chapter4.html'">Глава 4</div>
+                        <div class="dropdown-item" onclick="location.href='chapter5.html'">Глава 5</div>
+                        <div class="dropdown-item" onclick="location.href='chapter6.html'">Глава 6</div>
+                        <div class="dropdown-item" onclick="location.href='chapter7.html'">Глава 7</div>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="nav-button" disabled>Том 2 ▼</button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" style="color: #888">Глава 1 (незабаром)</div>
+                    </div>
+                </div>
+            </div>
+            <button class="nav-button" onclick="location.href='index.html'">Головна</button>
+        </div>
+    </nav>
 
-    <header>
-        <h1>Неонова Лілія - Глави 1+2</h1>
-    </header>
-
-    <main>
-        <section class="chapter-content">
+    <main class="container">
+        <h1 class="chapter-title">Неонова Лілія - Глави 1+2</h1>
+        
+        <div class="meta-info">
             <p>Фанфік "Неононова Лілія: Том 1.0"</p>
             <p>Написано: Бім-Азбей</p>
             <p>Ідея: Бім-Азбей</p>
             <p>Все на цьому папірецю: Бім-Азбей</p>
             <p>Папірець: NanoTraisen</p>
-            <p>===================================================</p>
-            <p>                                             Глава 1</p>
-            <p>                                Несподівана Зустріч</p>
-            <p>===================================================</p>
-            <p>Йшов собі Неон-Рам по станції, та бачить її, Мілію - Ріт. Вони привітались, розговорились, пішли у бар. Говорили про все на світі. І тут бачать дракона, вони почали бігти від нього, він їх практично з'їв, но вони встигли піти геть від нього. Но тут, вони бачать кадета СБ Патріка Роджерса, який цілився в них, був готовий вістрилити. Но Неон-Рам встигає підбігти та вихватити зброю з його рук, він був агентом синдикату, зрозумів Неон. Кадет теж це зрозумів. Поки Мілія - Ріт стояла та стояла у ступорі переварюючи що сталось, Неон-Рам стояв біля сервісної працівниці та готовий був стріляти у кадета. Так вони простояли хвилину, от поки Детектив не сказав у рацію СБ: "Вмене тут агент синдикату Патрік Роджерс, розстріляти?". Та йому відповів капітан: "Зараз ЧК, і він агент, стріляй!!!". Після цього Неон-Рам, почав стріляти всю обойму. Коли він закінчив, то кадет лежав мертвий вже давно з пробитою 20 разів бронею.</p>
+        </div>
 
-			
-			
-			<p>===================================================</p>
-			<p>                                              Глава 2</p>
-			<p>                                          Красиві Техи</p>
-			<p>===================================================</p>
+        <section class="chapter-content">
+            <hr class="chapter-separator">
+            <h2>Глава 1 - Несподівана Зустріч</h2>
+            <hr class="chapter-separator">
+			<p>Йшов собі Неон-Рам по станції, та бачить її, Мілію - Ріт. Вони привітались, розговорились, пішли у бар. Говорили про все на світі. І тут бачать дракона, вони почали бігти від нього, він їх практично з'їв, но вони встигли піти геть від нього. Но тут, вони бачать кадета СБ Патріка Роджерса, який цілився в них, був готовий вістрилити. Но Неон-Рам встигає підбігти та вихватити зброю з його рук, він був агентом синдикату, зрозумів Неон. Кадет теж це зрозумів. Поки Мілія - Ріт стояла та стояла у ступорі переварюючи що сталось, Неон-Рам стояв біля сервісної працівниці та готовий був стріляти у кадета. Так вони простояли хвилину, от поки Детектив не сказав у рацію СБ: "Вмене тут агент синдикату Патрік Роджерс, розстріляти?". Та йому відповів капітан: "Зараз ЧК, і він агент, стріляй!!!". Після цього Неон-Рам, почав стріляти всю обойму. Коли він закінчив, то кадет лежав мертвий вже давно з пробитою 20 разів бронею.</p>
+            
+            <hr class="chapter-separator">
+            <h2>Глава 2 - Красиві Техи</h2>
+            <hr class="chapter-separator">
 			<p>Одного разу у барі сиділи: Хімік Дангер Жардін, Капітан Бім-Азбей, Детектив Неон- Рам та Сервісна працівниця Мілія- Ріт. Вони та ще один інженер з картою капітана, були єдиними на станції. Ніхто окрім Капітана, не пив, Капітан палинку, бутилкою за бутилкою просушував. Після того як Капітан напився, він розніс пів бару, сламав великий стіл та багато стільців і розбив кучу бутилок/стаканів.</p>
 			<p>Після цього вони просто говорили, но тут Мілія- Ріт почала підкатувати до Неон- Рама, він був непроти, даже за такої поведінки. Працівниця підійшла до Неона, почала його гладити по коліну, по кобурі, почала його обнімати, Детектив був червоний, як і Працівниця. Но їм було добре. Поки хімік з Капітаном на це дивились, ті во всю обнімались, та шептались про їх любов іншої до іншого. Капітан все це чув, а хімік - ні. І потім, Мілія- Ріт взяв Неона- Рама за руку, не дуже повільно повела його кудись у техи біля Карго, довго, декілька хвилин, но для обох, це були години щастя. коли вони одні спокійно собі були, їх ніхто не трогав, но тут. Коли вже практично прийшли, Детектива по рації сказав капітан: "Неон- Рам, ти де? Чому ти не на посту? Хех". Щоб не відволікатись, Неон- Рам вимкнув гарнітуру, щоб їм ніхто не зміг заважати. Коли вони прийшли вони побачили дуже красивий космос, та почали обніматись, говорити про чудовий космос за окном, коли вони багато часу пообнімались. То вони вирішили поцілуватись. Вони дуже мило почали цілуватись на фоні космосу. Дуже довго вони так цілувались. Но хімік вже давно їх шукав по техах, і знайшов. Тільки його не побачили, тому він вирішив з інтересу подивитись. Неон- Рам сказав: "Вибач моє сонечко, но мені треба ненадовго піти, я зараз вернусь.", сказавши це він пішов до бару. Коли він пройшов, він набрав собі води, випивши та проігнорувавши капітанські запитання, він пішов до своєї любов'ї. Но капітан так просто не здавався, він пішов за детективом, той захотів залишити у тайні їх місце. Тому він почав бігати по техах, та так, що любий інженер з мапою не зможе його наздогнати. Но Кеп був до цього дуже хорошим Головним Інженером, він всі техи знав максимально добре, як тільки міг, но не мав нічого щоб остановити Неона. Тому кеп просто бігав за Неон- Рамом, із надією того спіймати. Той дуже увіляв, і знайшов мило, та не просте, а саме сильне на станції "Омега мило", тому швидко кинув його. Кеп впав і поки Капітан піднімався, детектив побіг геть і скрився. Коли він прийшов, він був вже дуже захиканий, через те що багато бігав по станції від Капітана. Мілія- Ріт все зрозуміла, і почала обнімати та огороджувати любов'ю Неон- Рама, той миттєво заспокоївся і почав робити теж саме. Вони цілувались дуже багато і дуже придуже щасливо, хімік за всім цим наблюдав, і говорить на частоті медичного відділу: "Я їх знайшов, йди до Карго". Так як Неон- Рам був детективом СБ, він мав тільки частоту СБ, а Мілія- Ріт була сервісною працівницею, вона мала доступ тільки до частоти служебного відділу. Капітан прийшов до Карго, хімік його повів до голубчиків. Коли вони прийшли, то їх вже не було, Кеп не знав як на це відповісти та як реагувати, но тут він побачив чийсь кров з під шкафу. Кеп швидко побіг та відкрив його, а там просто кров. Капітан зрозумів що пара близько, тому він пішов дальше по тезах, хімік за ним. Вони йшли, йшли, та так і не знайшли, і тут на частоті СБ та служебного каналів чути одне: "Що ви з нас хочете?". І Капітан відповідає: "Блять, ви сссоссетесссь у барі, я вас хотів дещо попитати". А йому у СБ каналі Мілія- Ріт відповідає: "так питайте по рації". А Кеп їм: "Нас ЦК прослуховує, якщо ніхто не знав".  Потім всі вирішили зійтись у бар, зійшлись у барі всі: Хімік, Капітан, Детектив і Сервісна працівниця. Капітан сказав хіміку: "Дякую тобі за все, але краще піди геть". Хімік послухався та вийшов до меду. І вони почали говорити, розговорились, і не замінили, як підлетів шато евакуаційний шатл. Вони всі пішли і полетіли на ЦК.</p>
-
         </section>
 
         <div class="chapter-navigation">
-            <button onclick="location.href='index.html'">Повернутись до головної</button>
-            <button onclick="location.href='chapter3.html'">Наступна глава</button>
+            <button class="nav-button" onclick="location.href='index.html'">← Головна</button>
+            <button class="nav-button" onclick="location.href='chapter3.html'">Глава 3 →</button>
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Lines</p>
-    </footer>
+    <div class="reading-controls">
+        <div class="text-size-controls">
+            <button class="nav-button" onclick="changeFontSize(-1)">A-</button>
+            <button class="nav-button" onclick="changeFontSize(0)">A</button>
+            <button class="nav-button" onclick="changeFontSize(1)">A+</button>
+        </div>
+        <button class="nav-button" onclick="toggleNightMode()">🌓</button>
+    </div>
 
+    <script>
+        // Ripple effect
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+                ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+                button.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Reading settings
+        let currentFontSize = 1;
+
+        function changeFontSize(delta) {
+            if(delta === 0) {
+                currentFontSize = 1;
+            } else {
+                currentFontSize += delta * 0.1;
+                currentFontSize = Math.min(Math.max(0.8, currentFontSize), 1.5);
+            }
+            document.documentElement.style.fontSize = `${currentFontSize}rem`;
+            localStorage.setItem('fontSize', currentFontSize);
+        }
+
+        function toggleNightMode() {
+            document.documentElement.setAttribute(
+                'data-theme',
+                document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+            );
+            localStorage.setItem('theme', document.documentElement.getAttribute('data-theme'));
+        }
+        // Progress tracking
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = scrollTop / scrollHeight;
+            document.documentElement.style.setProperty('--read-progress', progress);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowLeft') window.location.href = 'index.html';
+            if(e.key === 'ArrowRight') window.location.href = 'chapter3.html';
+        });
+
+        // Load saved settings
+        window.addEventListener('load', () => {
+            const savedFontSize = localStorage.getItem('fontSize');
+            if(savedFontSize) {
+                currentFontSize = parseFloat(savedFontSize);
+                document.documentElement.style.fontSize = `${currentFontSize}rem`;
+            }
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+
+            const savedScroll = localStorage.getItem('chapterScroll');
+            if(savedScroll && window.location.hash === '#continue') {
+                window.scrollTo(0, savedScroll);
+            }
+        });
+
+        // Save position before unload
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('chapterScroll', window.pageYOffset);
+        });
+    </script>
 </body>
 </html>

@@ -5,58 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Неонова Лілія: Читати без реєстрації та СМС</title>
     <style>
+        :root {
+            --primary: #ff66ff;
+            --primary-dark: #ff33ff;
+            --background: #1e1e1e;
+            --surface: #2b2b2b;
+            --text-primary: #f0f0f0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: #f0f0f0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
             margin: 0;
+            padding: 0;
+            animation: fadeIn 0.5s ease-in;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
         header {
             text-align: center;
-            padding: 20px;
+            padding: 40px 0;
+            background: var(--surface);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            position: relative;
+            backdrop-filter: blur(10px);
         }
         h1, h2 {
-            color: #ff66ff;
+            color: var(--primary);
+            margin: 0;
+            font-weight: 500;
         }
-        .chapter-list, .volume-list {
-            margin-left: 20px;
+        .fanfic-list {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .volume-list {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .volume-list:hover {
+            transform: translateY(-5px);
+        }
+        .chapter-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
         }
         .chapter-list button {
-            background-color: #ff66ff;
+            background-color: var(--primary);
             color: white;
             border: none;
-            padding: 10px;
-            margin: 5px;
+            padding: 12px 16px;
+            border-radius: 8px;
             cursor: pointer;
-            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
         .chapter-list button:hover {
-            background-color: #ff33ff;
+            background-color: var(--primary-dark);
+            box-shadow: 0 6px 12px rgba(255, 102, 255, 0.3);
         }
         .neon-list {
-            margin-top: 30px;
+            margin: 40px 0;
+            padding: 24px;
+            border-radius: 12px;
+            background: var(--surface);
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 20px rgba(255, 102, 255, 0.1);
+            animation: slideIn 0.6s ease-out;
+        }
+        .neon-list:hover {
+            box-shadow: 0 0 30px rgba(255, 102, 255, 0.2);
+        }
+        .neon-letter {
+            background: var(--surface);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
             padding: 20px;
-            border: 2px solid #ff66ff;
-            background-color: #2b2b2b;
+            animation: slideIn 0.6s ease-out;
+        }
+        .neon-letter h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
         }
         footer {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 60px;
+            padding: 20px;
             color: #888;
+            border-top: 1px solid rgba(255, 102, 255, 0.1);
+        }
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 600ms linear;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .chapter-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
         }
     </style>
 </head>
 <body>
-
     <header>
-        <h1>Неонова Лілія</h1>
+        <div class="container">
+            <h1>Неонова Лілія</h1>
+        </div>
     </header>
-
-    <main>
+    <main class="container">
         <section class="fanfic-list">
             <div class="volume-list">
-                <h3>Том 1</h3>
+                <h2>Том 1</h2>
                 <div class="chapter-list">
                     <button onclick="location.href='chapter1_2.html'">Глава 1+2</button>
                     <button onclick="location.href='chapter3.html'">Глава 3</button>
@@ -66,51 +157,65 @@
                     <button onclick="location.href='chapter7.html'">Глава 7</button>
                 </div>
             </div>
-
             <div class="volume-list">
-                <h3>Том 2 (Незабаром)</h3>
+                <h2>Том 2 (Незабаром)</h2>
                 <div class="chapter-list">
-                    <button>Глава 1 (незабаром)</button>
+                    <button disabled>Глава 1 (незабаром)</button>
                 </div>
             </div>
         </section>
-
-        <section class="neon-list">
+        <section class="neon-letter">
             <h2>Неоновий Лист</h2>
-            <strong><h4>Від кого: Lines (lines8810 в діскорді)</h4>
+            <strong>
+                <h4>Від кого: Lines (lines8810 в діскорді)</h4>
+                <h4>Кому: Осібам, що читали коли-небудь "Неонову Лілію"</h4>
+            </strong>
+            <p style="white-space: pre-line">
+Привіт всім, на зв'язку сам писач "Неонової Лілії" – Lines!
+Мушу поділитися важливими новинами, які стосуються мого фанфіку.
 
-            <h4>Кому: Осібам, що читали коли-небудь "Неонову Лілію"</h4></strong>
-            
-            <p style='white-space: pre-line'>
-                        Привіт всім, на зв'язку сам писач "Неонової Лілії" – Lines!
-            Мушу поділитися важливими новинами, які стосуються мого фанфіку.
-            
-            По-перше, я хотів би пояснити, що сталося. Нажаль чи на щастя, я був забанений на сервері "Січ" (приблизно з середини написання 6-7 глави). Це була неприємна ситуація, але я зрозумів, що це, можливо, стало поштовхом переглянути деякі речі. Звичайно, я завжди намагався вкладати душу у цей проєкт, але останнім часом життя підкинуло мені кілька додаткових викликів.
-            
-            По-друге, маю деякі особисті проблеми, які впливають на мій творчий процес. Не буду занурюватися в деталі, але скажу так: зараз все не найкращим чином, і мені потрібен час, щоб впоратися з цим.
-            
-            Отже, офіційно повідомляю, що "Неонова Лілія" заморожується. Я не хочу давати пустих обіцянок щодо нових глав чи продовження роботи. Можливо, фанфік залишиться в такому стані назавжди. Я не виключаю, що одного дня повернуся до нього, але поки що це не на часі.
-            
-            Для тих, хто слідкував за проєктом, читав, коментував і підтримував — величезна подяка вам. Ваші слова багато означали для мене, і я вдячний кожному, хто поділився своїми думками про "Неонову Лілію". Ви всі неймовірні.
-            
-            Тим часом, я буду займатися своїми справами, і сподіваюсь, що колись повернеться натхнення й час для творчості.
-            
-            Трохи про проблеми, хоч наразі їх досить багато, всі не перерахуєш, але я спробую..
-            Є проблеми з:
-            - Емоційним станом
-            - Психологічним станом
-            - Браком мотивації
-            - Браком часу
-            
-            Ну.. Кажу як є, я піду у відставку... Хто зна на скільки... Не сумуйте там без мене !
-            
-            P.s.: Це не значить, що я перестану з усіма спілкуватися, це просто значить, що фанфік більше не буде писатись</p>
+По-перше, я хотів би пояснити, що сталося. Нажаль чи на щастя, я був забанений на сервері "Січ" (приблизно з середини написання 6-7 глави). Це була неприємна ситуація, але я зрозумів, що це, можливо, стало поштовхом переглянути деякі речі. Звичайно, я завжди намагався вкладати душу у цей проєкт, але останнім часом життя підкинуло мені кілька додаткових викликів.
+
+По-друге, маю деякі особисті проблеми, які впливають на мій творчий процес. Не буду занурюватися в деталі, але скажу так: зараз все не найкращим чином, і мені потрібен час, щоб впоратися з цим.
+
+Отже, офіційно повідомляю, що "Неонова Лілія" заморожується. Я не хочу давати пустих обіцянок щодо нових глав чи продовження роботи. Можливо, фанфік залишиться в такому стані назавжди. Я не виключаю, що одного дня повернуся до нього, але поки що це не на часі.
+
+Для тих, хто слідкував за проєктом, читав, коментував і підтримував — величезна подяка вам. Ваші слова багато означали для мене, і я вдячний кожному, хто поділився своїми думками про "Неонову Лілію". Ви всі неймовірні.
+
+Тим часом, я буду займатися своїми справами, і сподіваюсь, що колись повернеться натхнення й час для творчості.
+
+Трохи про проблеми, хоч наразі їх досить багато, всі не перерахуєш, але я спробую..
+Є проблеми з:
+- Емоційним станом
+- Психологічним станом
+- Браком мотивації
+- Браком часу
+
+Ну.. Кажу як є, я піду у відставку... Хто зна на скільки... Не сумуйте там без мене !
+
+P.s.: Це не значить, що я перестану з усіма спілкуватися, це просто значить, що фанфік більше не буде писатись
+            </p>
         </section>
     </main>
-
+    <script>
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+                ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+                button.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    </script>
     <footer>
-        <p>&copy; 2024 Lines</p>
+        <div class="container">
+            <p>&copy; 2025 Неонова Лілія</p>
+        </div>
     </footer>
-
 </body>
 </html>
